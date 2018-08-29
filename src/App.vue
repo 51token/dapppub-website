@@ -1,28 +1,51 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <main id="app">
+    <token-header />    
+    <div class="container">
+      <trade-form /> 
+    </div>
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Eos from 'eosjs';
 
 export default {
-  name: 'app',
+  created() {
+    document.addEventListener('scatterLoaded', () => {
+      if (!scatter.identity) return;
+      const account = scatter.identity.accounts.find(account => account.blockchain === 'eos');
+      if (!account) return;
+      this.$store.commit('UPDATE_ACCOUNT', account);
+    });
+  },
+
+  data() {
+    return {
+      currentTab: 'buy', 
+      isTest: true
+    };
+  },
+  
   components: {
-    HelloWorld
+    tokenHeader: require('@/components/header').default,
+    tradeForm: require('@/components/trade').default
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+  #app {
+    height: 100%;
+    background-color: #F5F5F5;
+  }
+
+  .container {
+    padding: 30px;
+  }
+
+  .trade-container {
+    margin-bottom: 30px;
+  }
 </style>
+
