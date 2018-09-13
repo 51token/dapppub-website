@@ -40,7 +40,7 @@
           <a 
             class="order-trxlink"
             target="_blank"
-            :href="`//eosflare.io/tx/${scope.row.trx_id}`">detail</a>
+            :href="`//eospark.com/MainNet/tx/${scope.row.trx_id}`">detail</a>
         </template>
     </el-table-column>
     </el-table>
@@ -132,10 +132,6 @@ export default {
       this.offset += 1;
       this.fetchOrders();
     },
-
-    viewDetail(id) {
-      window.open(`//eosflare.io/tx/${id}`);
-    }
   },
 };
 </script>
@@ -148,6 +144,7 @@ export default {
   border: 1px solid #DBE1E8;
   border-radius: 6px;
   padding: 24px 32px 16px;
+  min-width: 0;
 }
 
 .orders > header {
