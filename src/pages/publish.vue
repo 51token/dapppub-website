@@ -164,6 +164,21 @@
             <i class="el-icon-question" />
           </el-tooltip>
         </el-form-item>
+        <el-form-item label="Referral Fee">
+          <el-input 
+            class="form-item__percent"
+            type="float"
+            placeholder="0.10"
+            v-model="form.referralFee">
+            <template slot="append">%</template>
+          </el-input>
+          <el-tooltip 
+            effect="dark" 
+            content="referral fee" 
+            placement="top-start">
+            <i class="el-icon-question" />
+          </el-tooltip>
+        </el-form-item>
       </el-form>
     </div>
   </el-card>
@@ -194,7 +209,8 @@
           option: '200000',
           lockup: 365,
           baseFee: '5',
-          initFee: '50'
+          initFee: '50',
+          referralFee: 0.10,
         }
       };
     },
@@ -228,7 +244,8 @@
           || !this.form.lockup
           || !this.form.baseFee
           || !this.form.initFee
-          || !this.account.name;
+          || !this.account.name
+          || !this.form.referralFee;
       },
 
       transformToken(e) {
@@ -263,7 +280,9 @@
             option_quantity: Number(this.form.option).toFixed(4) + ' ' + this.form.token,
             lock_up_period: +this.form.lockup * 86400, 
             base_fee_percent: +this.form.baseFee,
-            init_fee_percent: +this.form.initFee
+            init_fee_percent: +this.form.initFee,
+            refer_fee: Number(+this.form.referralFee * 100).toFixed(0),
+
           }, options).then(() => {
             this.$notify.success({ message: 'Token publish success' });
             this.loading = false;
