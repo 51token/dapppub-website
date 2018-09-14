@@ -39,6 +39,13 @@
               placeholder="Enter pay EOS amount"
               v-model="form.buy.amount" />
           </el-form-item>
+          <el-form-item>
+            <el-alert
+              :closable="false"
+              :title="'Fee percent: ' + referFeePercent + '%'"
+              type="warning"
+              show-icon />
+          </el-form-item>
         </el-form>
         <footer class="trade-footer" slot="footer">
           <el-button 
@@ -145,6 +152,7 @@ export default {
     if (typeof scatter === 'undefined') return;
     this.getBalance();
     this.getToken();
+    this.fetchReferFee();
   },
 
   data() {
@@ -177,11 +185,13 @@ export default {
     account() {
       this.getBalance();
       this.getToken();
+      this.fetchReferFee();
     },
 
     token() {
       this.getBalance(); 
       this.getToken();
+      this.fetchReferFee();
     }
   },
 
@@ -218,6 +228,20 @@ export default {
       }).then(({ rows }) => {
         this.feePercent = feePercent(rows[0]);
         console.log(this.feePercent);
+      }); 
+    },
+    fetchReferFee() {
+      api.getTableRows({
+        json: true,
+        code: 'tokendapppub',
+        scope: this.token.toUpperCase(),
+        table: 'refer'
+      }).then(({ rows }) => {
+        if (rows.length == 1) {
+          this.referFeePercent = rows[0].fee_percent/100;
+        } else {
+          this.referFeePercent = 0;
+        }  
       }); 
     },
     buy() {

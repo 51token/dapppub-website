@@ -23,6 +23,10 @@
         <span>{{about.eosPool}}</span>
       </li>
       <li>
+        <label>Buy Fee Rate</label>
+        <span>{{referFeePercent}}%</span>
+      </li>
+      <li>
         <label>Sell Fee Rate</label>
         <span>{{about.feePercent}}%</span>
       </li>
@@ -74,6 +78,7 @@ export default {
     this.fetchSocial();
     this.getBalance();
     this.fetchToken();
+    this.fetchReferFee();
   },
 
   data() {
@@ -90,6 +95,7 @@ export default {
       this.fetchToken();
       this.fetchSocial();
       this.getBalance();
+      this.fetchReferFee();
     },
 
     account() {
@@ -121,6 +127,21 @@ export default {
         this.about = rows[0];
         this.about.feePercent = feePercent(this.about);
         this.about.eosPool = (hexTransform(this.about.eos) - hexTransform(this.about.base_eos)).toFixed(4);
+      }); 
+    },
+
+    fetchReferFee() {
+      api.getTableRows({
+        json: true,
+        code: 'tokendapppub',
+        scope: this.token.toUpperCase(),
+        table: 'refer'
+      }).then(({ rows }) => {
+        if (rows.length == 1) {
+          this.referFeePercent = rows[0].fee_percent/100;
+        } else {
+          this.referFeePercent = 0;
+        }  
       }); 
     },
 
