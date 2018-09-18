@@ -164,6 +164,14 @@
             <i class="el-icon-question" />
           </el-tooltip>
         </el-form-item>
+        <el-form-item label="Start Time">
+          <!-- <span class="demonstration">默认</span> -->
+          <el-date-picker
+            v-model="form.startTime"
+            type="datetime"
+            placeholder="Select date and time">
+          </el-date-picker>
+        </el-form-item>
         <el-form-item label="Referral Fee">
           <el-input 
             class="form-item__percent"
@@ -189,10 +197,13 @@
   import network from '@/utils/network';
   import api from '@/utils/eos';
 
+  // import 'element-ui/lib/index.js';
+
   import 'element-ui/lib/theme-chalk/form.css';
   import 'element-ui/lib/theme-chalk/card.css';
   import 'element-ui/lib/theme-chalk/input.css';
   import 'element-ui/lib/theme-chalk/button.css';
+  import 'element-ui/lib/theme-chalk/index.css';
 
   export default {
     mounted() {
@@ -211,6 +222,7 @@
           baseFee: '5',
           initFee: '50',
           referralFee: 0.10,
+          startTime: new Date()
         }
       };
     },
@@ -244,6 +256,7 @@
           || !this.form.lockup
           || !this.form.baseFee
           || !this.form.initFee
+          || !this.form.startTime
           || !this.account.name
           || !this.form.referralFee;
       },
@@ -282,6 +295,7 @@
             base_fee_percent: +this.form.baseFee,
             init_fee_percent: +this.form.initFee,
             refer_fee: Number(+this.form.referralFee * 100).toFixed(0),
+            start_time: Math.round(this.form.startTime.getTime()/1000),
 
           }, options).then(() => {
             this.$notify.success({ message: 'Token publish success' });
