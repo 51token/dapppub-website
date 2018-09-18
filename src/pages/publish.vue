@@ -54,7 +54,7 @@
             v-model="form.token" /> 
           <el-tooltip 
             effect="dark" 
-            content="must be uppercase, length between 5~7 (include)" 
+            content="must be uppercase, length between 1~7 (include)" 
             placement="top-start">
             <i class="el-icon-question" />
           </el-tooltip>
@@ -91,17 +91,6 @@
             <i class="el-icon-question" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item>
-          <el-button 
-            :loading="loading"
-            :disabled="formDisabled()"
-            @click="publish"
-            type="primary">Publish</el-button>
-        </el-form-item>
-      </el-form>
-      <el-form
-        label-width="150px"
-        class="form">
         <el-form-item label="Option Quantity">
           <el-input 
             class="form-item__base"
@@ -118,6 +107,17 @@
             placement="top-start">
             <i class="el-icon-question" />
           </el-tooltip>
+        </el-form-item>
+      </el-form>
+      <el-form
+        label-width="150px"
+        class="form">
+        <el-form-item label="Start Time">
+          <el-date-picker
+            v-model="form.startTime"
+            type="datetime"
+            placeholder="Select date and time">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="Lock Period">
           <el-input 
@@ -164,14 +164,6 @@
             <i class="el-icon-question" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item label="Start Time">
-          <!-- <span class="demonstration">默认</span> -->
-          <el-date-picker
-            v-model="form.startTime"
-            type="datetime"
-            placeholder="Select date and time">
-          </el-date-picker>
-        </el-form-item>
         <el-form-item label="Referral Fee">
           <el-input 
             class="form-item__percent"
@@ -186,6 +178,15 @@
             placement="top-start">
             <i class="el-icon-question" />
           </el-tooltip>
+        </el-form-item>
+        <el-form-item>
+          <el-button 
+            :loading="loading"
+            :disabled="formDisabled()"
+            @click="publish"
+            type="primary">
+            {{publishFee}} PUB
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -234,7 +235,14 @@
     computed: {
       account() {
         return this.$store.state.account;
-      } 
+      },
+      publishFee() {
+        if (!this.form.token) {
+          return 100;
+        }
+        length = this.form.token.length
+        return length <= 3 ? 100 * Math.pow(10, 4-length) : 100;
+      }
     },
     methods: {
       getBalance() {
