@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import ElementUI from 'element-ui';
-// import {
-//   TimePicker
-// } from 'element-ui'
 import store from './store';
 import router from './router';
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -47,9 +44,7 @@ import './style.css';
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
-// Vue.use(TimePicker);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-// Vue.component(TimePicker.name, TimePicker);
 
 new Vue({
   store,
