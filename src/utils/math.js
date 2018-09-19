@@ -5,11 +5,10 @@ export const feePercent = raw => {
     start_time,
     lock_up_period
   } = raw; 
-
-  if (init_fee_percent === base_fee_percent) return base_fee_percent;
-
   const now = (Date.now() / 1000);
-  return parseFloat(lock_up_period * (init_fee_percent- base_fee_percent) / (2 * (now - start_time) + lock_up_period) + base_fee_percent).toFixed(0);
+  if ((init_fee_percent === base_fee_percent) || (now >= start_time + lock_up_period)) return base_fee_percent;
+  
+  return Math.ceil(parseFloat(2 * lock_up_period * (init_fee_percent- base_fee_percent) / ((now - start_time) + lock_up_period) + 2 * base_fee_percent - init_fee_percent)).toFixed(0);
 };
 
 export const hexTransform = raw => {

@@ -54,7 +54,7 @@
             v-model="form.token" /> 
           <el-tooltip 
             effect="dark" 
-            content="must be uppercase, length between 5~7 (include)" 
+            content="must be uppercase, length between 1~7 (include)" 
             placement="top-start">
             <i class="el-icon-question" />
           </el-tooltip>
@@ -91,17 +91,6 @@
             <i class="el-icon-question" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item>
-          <el-button 
-            :loading="loading"
-            :disabled="formDisabled()"
-            @click="publish"
-            type="primary">Publish</el-button>
-        </el-form-item>
-      </el-form>
-      <el-form
-        label-width="150px"
-        class="form">
         <el-form-item label="Option Quantity">
           <el-input 
             class="form-item__base"
@@ -118,6 +107,17 @@
             placement="top-start">
             <i class="el-icon-question" />
           </el-tooltip>
+        </el-form-item>
+      </el-form>
+      <el-form
+        label-width="150px"
+        class="form">
+        <el-form-item label="Start Time">
+          <el-date-picker
+            v-model="form.startTime"
+            type="datetime"
+            placeholder="Select date and time">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="Lock Period">
           <el-input 
@@ -179,6 +179,15 @@
             <i class="el-icon-question" />
           </el-tooltip>
         </el-form-item>
+        <el-form-item>
+          <el-button 
+            :loading="loading"
+            :disabled="formDisabled()"
+            @click="publish"
+            type="primary">
+            {{publishFee}} PUB
+          </el-button>
+        </el-form-item>
       </el-form>
     </div>
   </el-card>
@@ -189,10 +198,13 @@
   import network from '@/utils/network';
   import api from '@/utils/eos';
 
+  // import 'element-ui/lib/index.js';
+
   import 'element-ui/lib/theme-chalk/form.css';
   import 'element-ui/lib/theme-chalk/card.css';
   import 'element-ui/lib/theme-chalk/input.css';
   import 'element-ui/lib/theme-chalk/button.css';
+  import 'element-ui/lib/theme-chalk/index.css';
 
   export default {
     mounted() {
@@ -211,6 +223,7 @@
           baseFee: '5',
           initFee: '50',
           referralFee: 0.10,
+          startTime: new Date()
         }
       };
     },
@@ -222,7 +235,14 @@
     computed: {
       account() {
         return this.$store.state.account;
-      } 
+      },
+      publishFee() {
+        if (!this.form.token) {
+          return 100;
+        }
+        length = this.form.token.length
+        return length <= 3 ? 100 * Math.pow(10, 4-length) : 100;
+      }
     },
     methods: {
       getBalance() {
@@ -244,6 +264,7 @@
           || !this.form.lockup
           || !this.form.baseFee
           || !this.form.initFee
+          || !this.form.startTime
           || !this.account.name
           || !this.form.referralFee;
       },
@@ -282,6 +303,7 @@
             base_fee_percent: +this.form.baseFee,
             init_fee_percent: +this.form.initFee,
             refer_fee: Number(+this.form.referralFee * 100).toFixed(0),
+            start_time: Math.round(this.form.startTime.getTime()/1000),
 
           }, options).then(() => {
             this.$notify.success({ message: 'Token publish success' });
