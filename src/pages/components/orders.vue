@@ -1,24 +1,30 @@
 <template>
-  <section class="orders">
-    <header>Orders</header>
+  <section class="orders" v-bind:class="{ mobileOrder: isWM }">
+    <header v-bind:class="{ mobileHeader: isWM }">Orders</header>
     <el-table class="table" border stripe :data="orders">
-      <el-table-column prop="is_buy_type" label="Type" width="100">
+      <!-- 电脑端 -->
+      <el-table-column v-if="!isWM" prop="is_buy_type" label="Type" width="100">
         <template slot-scope="scope">
           <el-tag :type="scope.row.is_buy_type ? 'success' : 'danger'" disable-transitions>{{scope.row.is_buy_type ? 'buy' : 'sell'}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="account_name" label="Account" />
-      <el-table-column prop="money" label="EOS" :formatter="eosFormatter" />
-      <el-table-column prop="amount" label="Amount"  />
-      <el-table-column prop="price" label="price" :formatter="priceFormatter" />
-      <el-table-column prop="time" label="Time" :formatter="dateFormatter" />
-      <el-table-column label="Action">
+      <el-table-column v-if="!isWM" prop="account_name" label="Account" />
+      <el-table-column v-if="!isWM" prop="money" label="EOS" :formatter="eosFormatter" />
+      <el-table-column v-if="!isWM" prop="amount" label="Amount"  />
+      <el-table-column v-if="!isWM" prop="price" label="price" :formatter="priceFormatter" />
+      <el-table-column v-if="!isWM" prop="time" label="Time" :formatter="dateFormatter" />
+      <el-table-column v-if="!isWM" label="Action">
         <template slot-scope="scope">
           <a class="order-trxlink" target="_blank" :href="`//eospark.com/MainNet/tx/${scope.row.trx_id}`">detail</a>
         </template>
-    </el-table-column>
+      </el-table-column>
+      <!-- 手机端 -->
+      <el-table-column v-if="isWM" prop="account_name" label="Account" :formatter="nameFormatter"/>
+      <el-table-column v-if="isWM" prop="amount" label="Amount"/>
+      <el-table-column v-if="isWM" prop="price" label="price" :formatter="numberFormatter" />
+      <el-table-column v-if="isWM" prop="time" label="Time" :formatter="dateFormatter" />
     </el-table>
-    <footer class="order-footer">
+    <footer class="order-footer" v-bind:class="{ mobileFooter: isWM }">
       <font-awesome-icon  @click="prevPage" :class="{ 'disabled': offset === 1 }"  icon="chevron-left" />
       <font-awesome-icon  @click="nextPage" :class="{ 'disabled': orders.length < limit }" icon="chevron-right" />
     </footer>
@@ -31,10 +37,12 @@ import fetch from '@/utils/api';
 export default {
   mounted() {
     this.fetchOrders();
+    this.aa();
   },
 
   data() {
     return {
+      isWM: false,
       orders: [],
       offset: 1,
       keyword: '',
@@ -89,6 +97,10 @@ export default {
       return price ? price.toFixed(8) + ` EOS / ${this.token.toUpperCase()}` : '-';
     },
 
+    numberFormatter({ price }){
+      return price ? price.toFixed(6) : '-';
+    },
+
     prevPage() {
       if (this.offset === 1) return;
       this.offset -= 1;
@@ -100,6 +112,24 @@ export default {
       this.offset += 1;
       this.fetchOrders();
     },
+
+    nameFormatter({ account_name }){
+      return account_name.replace(/(\w{3})\w{6}(\w{3})/, '$1****$2');;
+    },
+
+    aa(){
+      // 判断是否为手机端
+      var sUserAgent = navigator.userAgent.toLowerCase();
+      var bIsIphone = sUserAgent.match(/iphone os/i) ? 'iphone os': "";
+      var bIsWM = sUserAgent.match(/windows mobile/i) ? 'windows mobile': "";
+      var bIsAndroid = sUserAgent.match(/android/i) ? 'android': "";
+      if( bIsIphone || bIsWM || bIsAndroid ){
+        this.isWM = true;
+      }else{
+        console.log(22)
+        this.isWM = false;
+      }
+    }
   },
 };
 </script>
@@ -110,9 +140,13 @@ export default {
   background-color: #fff;
   box-shadow: rgba(114, 115, 119, 0.05) 0px 4px 14px;
   border: 1px solid #DBE1E8;
-  border-radius: 6px;
   padding: 24px 32px 16px;
+  border-radius: 6px;
   min-width: 0;
+}
+
+.mobileOrder{
+  padding:  10px;
 }
 
 .orders > header {
@@ -120,6 +154,10 @@ export default {
   color: rgb(80, 92, 108);
   margin-bottom: 30px;
   line-height: 1.5;
+}
+
+ .mobileHeader{
+  margin-top: 10px;
 }
 
 .table {
@@ -136,12 +174,13 @@ export default {
 
 .table >>> td,
 .table >>> th {
-  padding: 10px 8px;
+  padding: 8px 0;
+  text-align: center;
 }
 
 .table >>> td {
   border-bottom: 1px solid #E6ECF3;
-  font-size: .9em;
+  font-size: 12px;
   font-weight: 300;
 }
 
@@ -168,6 +207,11 @@ export default {
 
 .order-footer {
   margin-top: 30px;
+}
+.mobileFooter {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 10px;
 }
 
 .order-footer svg:first-child {
