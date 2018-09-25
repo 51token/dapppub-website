@@ -84,6 +84,7 @@ export default {
   data() {
     return {
       decimals: 0,
+      referFeePercent: 0,
       logoPub,
       about: {},
       social: {}
@@ -193,7 +194,6 @@ export default {
   border: 1px solid #DBE1E8;
   border-radius: 6px;
   padding: 24px 32px 16px;
-  margin-right: 30px;
 }
 
 .token-about > header {
@@ -212,7 +212,8 @@ export default {
 
 .about-list > li > label {
   color: #2968C9;
-  margin-right: 100px;
+  margin-right: 50px;
+  white-space: nowrap;
 }
 
 .about-list > li > span {

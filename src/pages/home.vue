@@ -3,8 +3,14 @@
     <token-info /> 
     <token-chart /> 
     <div class="bottom-container">
-      <token-about />
-      <token-orders />
+      <el-row style="width: 100%;flex-wrap: wrap;" type="flex" justify="space-between">
+        <el-col style="margin-top: 15px;" :xs="24" :sm="22" :md="6" :lg="6" :xl="6">
+          <token-about />
+        </el-col>
+        <el-col style="margin-top: 15px;"  :xs="24" :sm="22" :md="16" :lg="16" :xl="16">
+          <token-orders />
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -104,9 +110,5 @@ export default {
     margin-right: 15px;
   }
 
-  .bottom-container {
-    display: flex;      
-    align-items: flex-start;
-  }
 </style>
 

@@ -34,9 +34,12 @@
         class="create-link"
         :to="{ name: 'publish' }">publish one</router-link>
     </el-alert>
-    <div class="container">
-      <router-view />
-    </div>
+    <el-row style="width: 100%;margin-top: 20px;" align="middle" type="flex" justify="center">
+      <el-col :xs="22" :sm="22" :md="20" :lg="20" :xl="20">
+        <router-view />
+      </el-col>
+    </el-row>
+    
     <token-footer />
   </main>
 </template>
@@ -55,6 +58,13 @@ export default {
       if (!account) return;
       this.$store.commit('UPDATE_ACCOUNT', account);
     });
+    if(this.$route.hash){
+      const referrer_account = this.$route.hash.split("#")[1];
+      this.$store.commit('UPDATE_REFERRER', referrer_account);
+    }else{
+      const referrer_account = "godofdapppub";
+      this.$store.commit('UPDATE_REFERRER', referrer_account);
+    }
   },
 
   mounted() {
@@ -129,9 +139,6 @@ export default {
     background-color: #F4F7FA;
   }
 
-  .container {
-    padding: 30px 100px;
-  }
 
   .trade-container {
     margin-bottom: 30px;

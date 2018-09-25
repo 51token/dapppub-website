@@ -1,19 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
 import ElementUI from 'element-ui';
+import VueClipboard from 'vue-clipboard2'
 import store from './store';
 import router from './router';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { 
-  faWallet, 
-  faInfo, 
-  faDollarSign,
-  faChevronLeft,
-  faChevronRight,
-  faSignOutAlt,
-  faSearchDollar,
-  faHome,
-  faComments 
+
+import {
+    faWallet,
+    faInfo,
+    faDollarSign,
+    faChevronLeft,
+    faChevronRight,
+    faSignOutAlt,
+    faSearchDollar,
+    faHome,
+    faComments
 } from '@fortawesome/free-solid-svg-icons'
 import brands from '@fortawesome/fontawesome-free-brands'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -26,16 +28,16 @@ import 'element-ui/lib/theme-chalk/alert.css';
 import 'element-ui/lib/theme-chalk/tooltip.css';
 
 library.add(
-  faWallet, 
-  faInfo, 
-  faDollarSign,
-  faChevronLeft,
-  faChevronRight,
-  faSignOutAlt,
-  faSearchDollar,
-  faHome,
-  brands,
-  faComments 
+    faWallet,
+    faInfo,
+    faDollarSign,
+    faChevronLeft,
+    faChevronRight,
+    faSignOutAlt,
+    faSearchDollar,
+    faHome,
+    brands,
+    faComments
 );
 
 import 'normalize.css';
@@ -43,11 +45,13 @@ import './style.css';
 
 Vue.config.productionTip = false;
 
+Vue.use(VueClipboard)
+
 Vue.use(ElementUI);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 new Vue({
-  store,
-  router,
-  render: h => h(App)
+    store,
+    router,
+    render: h => h(App)
 }).$mount('#app');

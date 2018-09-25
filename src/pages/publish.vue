@@ -23,8 +23,9 @@
           href="JavaScript:;">charge PUB</a>
       </p>
     </el-alert>
-    <div class="token-body">
+    <div class="token-body" style="display: flex;justify-content: center;">
       <el-form 
+        label-position="top"
         label-width="150px"
         class="form">
         <el-form-item label="Current PUB">
@@ -108,10 +109,6 @@
             <i class="el-icon-question" />
           </el-tooltip>
         </el-form-item>
-      </el-form>
-      <el-form
-        label-width="150px"
-        class="form">
         <el-form-item label="Start Time">
           <el-date-picker
             v-model="form.startTime"
@@ -324,27 +321,28 @@
   }
 
   .form-item__name {
-    width: 200px;
+    min-width: 200px;
   }
 
   .form-item__base {
-    width: 300px;
+    min-width: 200px;
   }
 
   .form-item__token {
-    width: 300px;
+    min-width: 200px;
   }
 
   .form-item__time {
-    width: 200px;
+    min-width: 200px;
   }
 
   .form-item__percent {
-    width: 120px;
+    min-width: 120px;
   }
 
   .el-form-item >>> .el-input {
-    margin-right: 15px;
+    margin-right: 10px;
+    width: 260px;
   }
 
   .token-body {

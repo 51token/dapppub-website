@@ -1,42 +1,36 @@
 <template>
   <footer class="footer">
-    <nav class="social-links">
-      <ul>
-        <li>
-          <a href="//twitter.com/DappPub" target="_blank">
-            <img 
-              class="footer-icon"
-              :src="iconTwitter" 
-              alt="twitter" />
-          </a>
-        </li>
-        <li>
-          <a href="//github.com/dappub" target="_blank">
-            <img 
-              class="footer-icon"
-              :src="iconGithub" 
-              alt="github" />
-          </a>
-        </li>
-        <li>
-          <a href="//medium.com/dapppub" target="_blank">
-            <img 
-              class="footer-icon"
-              :src="iconMedium" 
-              alt="medium" />
-          </a>
-        </li>
-        <li>
-          <a href="//www.reddit.com/user/dapppub" target="_blank">
-            <img 
-              class="footer-icon"
-              :src="iconReddit" 
-              alt="reddit" />
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <p class="copyright">Copyright &copy; 2018. DAPP PUBLISH PTE. LTD.</p>
+    <el-row style="width: 100%;flex-wrap: wrap;" type="flex" justify="space-between">
+        <el-col style="margin-top: 15px;" :xs="24" :sm="6" :md="6" :lg="6" :xl="6">
+           <nav class="social-links">
+              <ul>
+                <li>
+                  <a href="//twitter.com/DappPub" target="_blank">
+                    <img class="footer-icon" :src="iconTwitter" alt="twitter" />
+                  </a>
+                </li>
+                <li>
+                  <a href="//github.com/dappub" target="_blank">
+                    <img class="footer-icon" :src="iconGithub" alt="github" />
+                  </a>
+                </li>
+                <li>
+                  <a href="//medium.com/dapppub" target="_blank">
+                    <img  class="footer-icon" :src="iconMedium"  alt="medium" />
+                  </a>
+                </li>
+                <li>
+                  <a href="//www.reddit.com/user/dapppub" target="_blank">
+                    <img class="footer-icon" :src="iconReddit" alt="reddit" />
+                  </a>
+                </li>
+              </ul>
+            </nav>
+        </el-col>
+        <el-col style="margin-top: 15px;"  :xs="24" :sm="6" :md="6" :lg="6" :xl="6">
+          <p class="copyright">Copyright &copy; 2018. DAPP PUBLISH PTE. LTD.</p>
+        </el-col>
+      </el-row>
   </footer>
 </template>
 
@@ -55,7 +49,8 @@
 
 <style scoped>
   .footer {
-    padding: 15px 100px;
+    margin-top: 20px;
+    padding: 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -91,6 +86,7 @@
     color: #888;
     font-size: .8em;
     font-weight: 300;
+    text-align: center
   }
 </style>
 

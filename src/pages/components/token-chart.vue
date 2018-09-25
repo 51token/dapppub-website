@@ -88,7 +88,7 @@ export default {
 .token-chart > header {
   padding: 24px 32px 16px;
   display: flex; 
-  align-item: center;
+  align-items: center;
   justify-content: space-between;
 }
 

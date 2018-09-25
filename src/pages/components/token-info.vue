@@ -1,22 +1,31 @@
 <template>
   <section class="token-actionbar">
-    <div class="token-actionbar__info">
-      <img 
-        class="token-logo"
-        :src="iconPub" />
-      <strong>{{token.toUpperCase()}}</strong>
-    </div>
-    <div class="token-actionbar__action">
-      <div class="left">
-        <p class="token-actionbar__title">YOUR BALANCE</p>
-        <p class="token-actionbar__balance">{{balance}}</p>
-      </div>
-      <div class="btn-group">
-        <button @click="dialog.buy = true">Buy</button>
-        <button @click="dialog.sell = true">Sell</button>
-        <button @click="dialog.transfer = true">Transfer</button>
-      </div>
-    </div>
+
+      <el-row style="width: 100%;flex-wrap: wrap;" type="flex" justify="space-between">
+        <el-col :xs="12" :sm="22" :md="4" :lg="4" :xl="4">
+          <div class="token-actionbar__info">
+            <img class="token-logo" :src="iconPub" />
+            <strong>{{token.toUpperCase()}}</strong>
+          </div>
+        </el-col>
+        <el-col :offset="11" :xs="12" :sm="22" :md="4" :lg="4" :xl="4" >
+          <div class="token-actionbar__action">
+            <div class="left">
+              <p class="token-actionbar__title">YOUR BALANCE</p>
+              <p class="token-actionbar__balance">{{balance}}</p>
+            </div>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="22" :md="5" :lg="5" :xl="5">
+          <div class="token-actionbar__action" style="padding: 15px 0;">
+            <div class="btn-group">
+              <el-button size="small" @click="dialog.buy = true">Buy</el-button>
+              <el-button size="small" @click="dialog.sell = true">Sell</el-button>
+              <el-button size="small" @click="dialog.transfer = true">Transfer</el-button>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
     
     <el-dialog :visible.sync="dialog.buy">
       <div class="trade-dialog">
@@ -161,6 +170,7 @@ export default {
       balance: '',
       loading: false,
       feePercent: '',
+      referFeePercent: 0,
       dialog: {
         buy: false,
         sell: false,
@@ -271,7 +281,7 @@ export default {
               from: this.account.name,
               to: 'tokendapppub',
               quantity: Number(this.form.buy.amount).toFixed(4) + ' EOS',
-              memo: this.token.toUpperCase() + '-referrer:godofdapppub'
+              memo: this.token.toUpperCase() + '-referrer:' + this.referrer_account
             }
           }]   
         }, { broadcast: true, sign: true }).then(() => {
@@ -289,7 +299,7 @@ export default {
           from: this.account.name,
           to: 'tokendapppub', 
           quantity: Number(this.form.buy.amount).toFixed(4) + ' EOS', 
-          memo: this.token.toUpperCase() + '-referrer:godofdapppub'
+          memo: this.token.toUpperCase() + '-referrer:' + this.referrer_account
         }, {
           authorization: `${this.account.name}@${this.account.authority}`,
           broadcast: true,
@@ -369,6 +379,10 @@ export default {
 
     token() {
       return this.$store.state.token;
+    },
+
+    referrer_account(){
+      return this.$store.state.referrer_account;
     }
   }
 };
@@ -378,7 +392,6 @@ export default {
   .token-actionbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin-bottom: 32px;
   }
 
@@ -395,16 +408,16 @@ export default {
 
   .token-logo {
     width: 46px;
-    margin-right: 24px;
+    margin-right: 30px;
   }
 
   .token-actionbar__action {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
   }
 
   .token-actionbar__action > .left {
-    margin-right: 30px;
     text-align: right;
   }
 
@@ -413,7 +426,6 @@ export default {
     font-weight: 500;
     border-radius: 4px;
     border: 1px solid #5190D9;
-    padding: 14px 40px;
     color: #fff;
     cursor: pointer;
   }
@@ -422,7 +434,7 @@ export default {
     background-color: #2e7bc4;
   }
 
-  .token-actionbar__action button:first-child {
+  /* .token-actionbar__action button:first-child {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right: .5px solid #427BBE;
@@ -439,7 +451,7 @@ export default {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: .5px solid #427BBE;
-  }
+  } */
 
   .token-actionbar__title {
     color: #B9C0C8;  
@@ -551,7 +563,7 @@ export default {
   }
 
   .token-actionbar >>> .el-dialog {
-    width: 22%;
+    min-width: 300px;
     max-width: 400px;
     margin: 0 auto;
     background-color: transparent;
